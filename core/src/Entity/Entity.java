@@ -43,7 +43,7 @@ public class Entity
     }
     
     /* Blank update method for inheriting class to implement*/
-    public void update(int t)
+    public void update(float t)
     {
         
     }

@@ -61,7 +61,7 @@ public class CoordinateTranslator
     public Point2D screenToWorld(int x, int y)
     {
         double wx = vw2sw * x + hortizontalOffset;
-        double wy = viewHeight - vh2sh * y + verticalOffset;
+        double wy = viewHeight -vh2sh * y + verticalOffset;
         
         return new Point2D(wx, wy);
     }
@@ -74,7 +74,7 @@ public class CoordinateTranslator
     public Point worldToScreen(double x, double y)
     {
         int sx = (int)(sw2vw * (x - hortizontalOffset));
-        int sy = (int)(sh2vh * (viewHeight - y + verticalOffset));
+        int sy = (int)(sh2vh * (y + verticalOffset));
         
         return new Point(sx, sy);
     }

@@ -8,6 +8,7 @@ package Entity;
 import Graphics.AnimationManager;
 import Math.Point2D;
 import Math.Vector2D;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import java.util.LinkedList;
 
 
@@ -34,9 +35,8 @@ public class AgentEntity extends Entity
      * @param x Agent's starting x coordinate
      * @param y Agent's starting y coordinate
      * @param type
-     * @throws SlickException
      */
-    public AgentEntity(double x, double y, String type) throws SlickException
+    public AgentEntity(double x, double y, String type) 
     {
         currentTargetP = new Point2D();
         position = new Point2D(x, y);
@@ -45,7 +45,7 @@ public class AgentEntity extends Entity
         anim = animM.setAnimation(type);
         path = new LinkedList<Point2D>();
         backtrack = new LinkedList<Point2D>();
-        speed = 20;
+        speed = 50;
         isBacktracking = false;
         generatePath();
 
@@ -56,12 +56,10 @@ public class AgentEntity extends Entity
      * state, determine animation based on targets location from Agent, and
      * check for collision.
      *
-     * @param gc
      * @param t
-     * @throws SlickException
      */
     @Override
-    public void update(GameContainer gc, int t) throws SlickException
+    public void update(float t)
     {
 
         if (!isBacktracking && !path.isEmpty() && !(isAgentNear(this, path.getFirst())))
@@ -119,7 +117,7 @@ public class AgentEntity extends Entity
 
     private void generatePath()
     {
-        path.add(new Point2D(72.5, 11.43));
+        path.add(new Point2D(72.5, 5.72));
         path.add(new Point2D(92, 11.43));
         path.add(new Point2D(92, 37.14));
         path.add(new Point2D(12.5, 37.14));

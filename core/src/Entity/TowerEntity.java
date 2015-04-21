@@ -28,7 +28,7 @@ public class TowerEntity extends Entity
     }
     
     @Override
-    public void update(int t)
+    public void update(float t)
     {
 
     }

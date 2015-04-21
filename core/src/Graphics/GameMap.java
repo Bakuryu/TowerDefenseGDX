@@ -31,7 +31,7 @@ public class GameMap
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        tex = new Texture(Gdx.files.internal("badlogic.jpg"));
+        //tex = new Texture(Gdx.files.internal("badlogic.jpg"));
         cam = new OrthographicCamera();
         cam.setToOrtho(false, w, h);
         cam.update();
