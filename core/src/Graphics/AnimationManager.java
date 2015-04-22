@@ -5,11 +5,8 @@
  */
 package Graphics;
 
-import Entity.AgentEntity;
-import Entity.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -65,7 +62,8 @@ public class AnimationManager
                 }
 
             }
-            anim = new Animation(0.25f, animFrames);
+            anim = new Animation(0.2f, animFrames);
+            
         }
 
         if (type == "Inky")
@@ -81,7 +79,7 @@ public class AnimationManager
                 }
 
             }
-            anim = new Animation(0.025f, animFrames);
+            anim = new Animation(0.2f, animFrames);
         }
 
         if (type == "Pinky")
@@ -97,7 +95,7 @@ public class AnimationManager
                 }
 
             }
-            anim = new Animation(0.025f, animFrames);
+            anim = new Animation(0.2f, animFrames);
         }
 
         if (type == "Clyde")
@@ -113,7 +111,7 @@ public class AnimationManager
                 }
 
             }
-            anim = new Animation(0.025f, animFrames);
+            anim = new Animation(0.2f, animFrames);
         }
         return anim;
     }

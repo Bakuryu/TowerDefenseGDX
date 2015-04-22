@@ -29,6 +29,7 @@ public class SpriteRenderer
     private SpriteBatch sBatch;
     private float stateTime;
     private CoordinateTranslator corT;
+    
 
     public SpriteRenderer(EntityManager entM, CoordinateTranslator corT)
     {
@@ -36,26 +37,18 @@ public class SpriteRenderer
         this.entM = entM;
         this.corT = corT;
         stateTime = 0f;
-
+        
     }
 
     public void render()
     {
-        AgentEntity a = (AgentEntity) entM.getEnts().get(0);
-        stateTime += Gdx.graphics.getDeltaTime();
-        anim = a.getAnimation();
-        curFrame = anim.getKeyFrame(stateTime, true);
-        sBatch.begin();
-        Point aScrPos = new Point(corT.worldToScreen(a.getPosition()));
-        sBatch.draw(curFrame, (float) aScrPos.getX(), (float) aScrPos.getY());
-        sBatch.end();
-//        for (Entity e : entM.getEnts())
-//        {
-//            if (e instanceof AgentEntity)
-//            {
-//                renderAgentEntity((AgentEntity) e);
-//            }
-//        }
+        for (Entity e : entM.getEnts())
+        {
+            if (e instanceof AgentEntity)
+            {
+                renderAgentEntity((AgentEntity) e);
+            }
+        }
     }
 
     private void renderAgentEntity(AgentEntity a)

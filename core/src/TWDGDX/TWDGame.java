@@ -2,6 +2,7 @@ package TWDGDX;
 
 import Entity.AgentEntity;
 import Entity.EntityManager;
+import Graphics.GUI;
 import Graphics.GameMap;
 import Graphics.SpriteRenderer;
 import Math.CoordinateTranslator;
@@ -10,10 +11,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import java.awt.Point;
 
 public class TWDGame extends ApplicationAdapter
 {
@@ -24,12 +21,14 @@ public class TWDGame extends ApplicationAdapter
     private float deltaTime;
     private SpriteRenderer sRen;
     private FPSLogger fLog;
+    private GUI gUI;
 
     private CoordinateTranslator corT;
 
     @Override
     public void create()
     {
+        
         fLog = new FPSLogger();
         deltaTime = 0f;
         gMap = new GameMap();
@@ -38,6 +37,7 @@ public class TWDGame extends ApplicationAdapter
         entM.addEnt(agent);
         corT = new CoordinateTranslator(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 100, 100, new Point2D(0, 0));
         sRen = new SpriteRenderer(entM, corT);
+        gUI = new GUI(gMap,corT);
         //curFrame = new TextureRegion();
     }
 
@@ -51,7 +51,8 @@ public class TWDGame extends ApplicationAdapter
         gMap.render();
         sRen.render();
         agent.update(deltaTime);
-
+        gUI.render();
+        gUI.update(deltaTime);
         System.out.println("Mouse :" + Gdx.input.getX() + ", " + Gdx.input.getY());
         System.out.println("stateTime: " + deltaTime);
     }

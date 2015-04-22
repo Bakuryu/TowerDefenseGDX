@@ -118,15 +118,15 @@ public class AgentEntity extends Entity
     private void generatePath()
     {
         path.add(new Point2D(72.5, 5.72));
-        path.add(new Point2D(92, 11.43));
-        path.add(new Point2D(92, 37.14));
-        path.add(new Point2D(12.5, 37.14));
-        path.add(new Point2D(12.5, 51.43));
-        path.add(new Point2D(92, 51.43));
-        path.add(new Point2D(92, 82.86));
-        path.add(new Point2D(25, 82.86));
-        path.add(new Point2D(22.5, 77));
-        path.add(new Point2D(15, 77));
+        path.add(new Point2D(92, 5.72));
+        path.add(new Point2D(92, 31.43));
+        path.add(new Point2D(12.5, 31.43));
+        path.add(new Point2D(12.5, 45.72));
+        path.add(new Point2D(92, 45.72));
+        path.add(new Point2D(92, 77.15));
+        path.add(new Point2D(25, 77.15));
+        path.add(new Point2D(22.5, 71.29));
+        path.add(new Point2D(15, 71.29));
     }
 
     public boolean isAgentNear(AgentEntity a, Point2D dest)
