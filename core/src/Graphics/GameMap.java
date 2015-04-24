@@ -81,15 +81,15 @@ public class GameMap
         // since the objects are on the second layer.
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("Collision");
 
-        for (int j = 0; j < numTilesY; j++)
+        for (int j = 0; j <numTilesY; j++)
         {
             for (int i = 0; i < numTilesX; i++)
             {
-
-                if (layer.getCell(i, j) != null)
+                if (layer.getCell(i, 34-j) != null)
                 {
                     // Read a Tile
-                    TiledMapTile tile = (layer.getCell(i, j).getTile());
+                    //TiledMapTile tile2 = (layer.getCell(0, 34).getTile());
+                    TiledMapTile tile = layer.getCell(i, 34-j).getTile();
 
                     String value = tile.getProperties().get("blocked", String.class);
 
@@ -97,22 +97,28 @@ public class GameMap
                     if (value.equals("true"))
                     {
 
+                        System.out.print("1 ");
                         // We set that index of the TileMap as blocked
                         blocked[i][j] = true;
 
                         // And create the collision Rectangle
                         Point2D wP = (convertFromTileCord(i, j));
 
-                        blocks.add(new Rectangle((int)(i * layer.getTileWidth()), (int)(j * layer.getTileHeight()), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
+                        blocks.add(new Rectangle((int)(i * layer.getTileWidth()), (int)(34-(j * layer.getTileHeight())), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
+                    }
+                    else
+                    {
+                        System.out.print("0 ");
                     }
                 }
                 else
                 {
-
-                    free.add(new Rectangle((int)(i * layer.getTileWidth()), (int)(j * layer.getTileHeight()), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
+                    System.out.print("0 ");
+                    free.add(new Rectangle((int)(i * layer.getTileWidth()), (int)((34-j) * layer.getTileHeight()), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
                 }
 
             }
+            System.out.println("");
         }
     }
     /* Returns list of blocks on the map that are collidable*/

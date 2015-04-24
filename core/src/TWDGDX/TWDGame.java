@@ -53,7 +53,6 @@ public class TWDGame extends ApplicationAdapter
         agent.update(deltaTime);
         gUI.render();
         gUI.update(deltaTime);
-        System.out.println("Mouse :" + Gdx.input.getX() + ", " + Gdx.input.getY());
-        System.out.println("stateTime: " + deltaTime);
+
     }
 }
