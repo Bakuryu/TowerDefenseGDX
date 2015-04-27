@@ -8,6 +8,7 @@ package Graphics;
 import Entity.AgentEntity;
 import Entity.Entity;
 import Entity.EntityManager;
+import Entity.TowerEntity;
 import Math.CoordinateTranslator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -47,6 +48,11 @@ public class SpriteRenderer
             {
                 renderAgentEntity((AgentEntity) e);
             }
+            
+            if (e instanceof TowerEntity)
+            {
+                renderTowerEntity((TowerEntity)e);
+            }
         }
     }
 
@@ -60,5 +66,12 @@ public class SpriteRenderer
         Point aScrPos = new Point(corT.worldToScreen(a.getPosition()));
         sBatch.draw(curFrame, (float) aScrPos.getX(), (float) aScrPos.getY());
         sBatch.end();
+    }
+
+    private void renderTowerEntity(TowerEntity t)
+    {
+        sBatch.begin();
+        Point tScrPos = new Point(corT.worldToScreen(t.getPosition()));
+        sBatch.draw(t.getTSprite(), tScrPos.x, tScrPos.y);
     }
 }

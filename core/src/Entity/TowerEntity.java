@@ -5,6 +5,7 @@
  */
 package Entity;
 
+import Math.Point2D;
 import Math.Vector2D;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -14,25 +15,38 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class TowerEntity extends Entity
 {
+
     private String type;
     private Texture towerSpr;
     private int fireSpeed;
     private Vector2D target;
 
-    
-    public TowerEntity(String type)
+    public TowerEntity(String type, Point2D pos)
     {
-        towerSpr = new Texture("res/graphics/tower32x32.png");
+        setSprite();
+
+        position = new Point2D(pos);
         this.type = type;
-  
+
     }
-    
+
     @Override
     public void update(float t)
     {
 
     }
-    
 
-    
+    public Texture getTSprite()
+    {
+        return towerSpr;
+    }
+
+    private void setSprite()
+    {
+        if (type == "norm")
+        {
+            towerSpr = new Texture("res/graphics/tower32x32.png");
+        }
+    }
+
 }

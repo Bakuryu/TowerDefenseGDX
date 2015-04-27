@@ -18,6 +18,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -39,12 +40,14 @@ public class GameMap
     private MapLayers mapLayer;
     private int numTilesX;
     private int numTilesY;
+    private Stage stage;
 
-    public GameMap()
+    public GameMap(Stage stage)
     {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
+        this.stage = stage;
         //tex = new Texture(Gdx.files.internal("badlogic.jpg"));
         cam = new OrthographicCamera();
         cam.setToOrtho(false, w, h);
@@ -53,7 +56,7 @@ public class GameMap
         tRenderer = new OrthogonalTiledMapRenderer(map);
         mapProp = map.getProperties();
         mapLayer = map.getLayers();
-        numTilesX = mapProp.get("width", Integer.class);
+        numTilesX = mapProp.get("width", Integer.class)-5;
         numTilesY = mapProp.get("height", Integer.class);
         free = new ArrayList<Rectangle>();
         blocks = new ArrayList<Rectangle>();
@@ -66,7 +69,8 @@ public class GameMap
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.update();
-        tRenderer.setView(cam);
+        tRenderer.setView((OrthographicCamera)stage.getCamera());
+
         tRenderer.render();
     }
 
@@ -85,11 +89,11 @@ public class GameMap
         {
             for (int i = 0; i < numTilesX; i++)
             {
-                if (layer.getCell(i, 34-j) != null)
+                if (layer.getCell(i, j) != null)
                 {
                     // Read a Tile
                     //TiledMapTile tile2 = (layer.getCell(0, 34).getTile());
-                    TiledMapTile tile = layer.getCell(i, 34-j).getTile();
+                    TiledMapTile tile = layer.getCell(i,j).getTile();
 
                     String value = tile.getProperties().get("blocked", String.class);
 
@@ -104,7 +108,7 @@ public class GameMap
                         // And create the collision Rectangle
                         Point2D wP = (convertFromTileCord(i, j));
 
-                        blocks.add(new Rectangle((int)(i * layer.getTileWidth()), (int)(34-(j * layer.getTileHeight())), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
+                        blocks.add(new Rectangle((int)(i * layer.getTileWidth()), (int)(j * layer.getTileHeight()), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
                     }
                     else
                     {
@@ -114,7 +118,7 @@ public class GameMap
                 else
                 {
                     System.out.print("0 ");
-                    free.add(new Rectangle((int)(i * layer.getTileWidth()), (int)((34-j) * layer.getTileHeight()), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
+                    free.add(new Rectangle((int)(i * layer.getTileWidth()), (int)((j) * layer.getTileHeight()), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
                 }
 
             }
@@ -151,7 +155,7 @@ public class GameMap
             wX = x * 2.5;
         }
         double hDTF = (double) 100 / 35;
-        double wY = (100 - (y * hDTF));
+        double wY = (y * hDTF);
 
         Point2D worldPoint = new Point2D(wX, wY);
         return worldPoint;
