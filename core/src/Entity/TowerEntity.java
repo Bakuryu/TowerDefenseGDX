@@ -20,20 +20,31 @@ public class TowerEntity extends Entity
     private Texture towerSpr;
     private int fireSpeed;
     private Vector2D target;
+    private double angleToTarget;
+    private EntityManager entM;
 
-    public TowerEntity(String type, Point2D pos)
+    public TowerEntity(String type, Point2D pos, EntityManager entM)
     {
+        this.entM = entM;
+        this.type = type;
         setSprite();
 
         position = new Point2D(pos);
-        this.type = type;
 
     }
 
     @Override
     public void update(float t)
     {
-
+        Point2D centerOfTower = new Point2D(position.getX()+2.5,position.getY()+(100.35));
+        for(Entity e : entM.getEnts())
+        {
+            if(e instanceof AgentEntity)
+            {
+                
+                target = centerOfTower.minus(e.getPosition());
+            }
+        }
     }
 
     public Texture getTSprite()
@@ -45,8 +56,13 @@ public class TowerEntity extends Entity
     {
         if (type == "norm")
         {
-            towerSpr = new Texture("res/graphics/tower32x32.png");
+            towerSpr = new Texture("graphics/tower32x32.png");
         }
+    }
+    
+    public double getRotation()
+    {
+        return angleToTarget;
     }
 
 }

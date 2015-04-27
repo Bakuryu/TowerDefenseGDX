@@ -5,6 +5,7 @@
  */
 package Graphics;
 
+import Entity.Entity;
 import Entity.EntityManager;
 import Entity.TowerEntity;
 import Math.CoordinateTranslator;
@@ -16,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -75,8 +75,11 @@ public class TowerGUI
             {
                 if (isLegal(tileInWorld))
                 {
-                    String type = sGUI.getSelectedType();
-                    TowerEntity tEntity = new TowerEntity(type,tileInWorld);
+
+                        String type = sGUI.getSelectedType();
+                        TowerEntity tEntity = new TowerEntity(type, tileInWorld, entM);
+                        entM.addEnt(tEntity);
+                    
                 }
             }
         }
@@ -240,11 +243,13 @@ public class TowerGUI
             {
                 System.out.print("(" + l + ", " + k + ") ");
                 System.out.print(isNeighborBlocked(l, k) + " ");
+                System.out.print(isTower(l,k));
 
-                if (isNeighborBlocked(l, k))
+                if (isNeighborBlocked(l, k)|| isTower(l,k))
                 {
                     hasBlockedTile = true;
                 }
+               
             }
         }
         System.out.println("");
@@ -305,5 +310,25 @@ public class TowerGUI
     public boolean IsPlacing()
     {
         return isPlacing;
+    }
+    
+    private boolean isTower(int x, int y)
+    {
+        Point mTileCord = new Point(x,y);
+        boolean TowerBlock = false;
+        for(Entity e : entM.getEnts())
+        {
+            if(e instanceof TowerEntity)
+            {
+//                System.out.println("T Pos: " + e.getPosition());
+//                System.out.println("TIW: " + tileInWorld);
+                Point tTilePos = convertToTileCord(e.getPosition());
+                if(tTilePos.equals(mTileCord))
+                {
+                    TowerBlock = true;
+                }
+            }
+        }
+        return TowerBlock;
     }
 }

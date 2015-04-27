@@ -72,6 +72,8 @@ public class SpriteRenderer
     {
         sBatch.begin();
         Point tScrPos = new Point(corT.worldToScreen(t.getPosition()));
-        sBatch.draw(t.getTSprite(), tScrPos.x, tScrPos.y);
+        sBatch.draw(t.getTSprite(), tScrPos.x, tScrPos.y-16);
+        sBatch.draw(t.getTSprite(), tScrPos.x, tScrPos.y-16, t.getTSprite().getWidth()/2, t.getTSprite().getHeight()/2, t.getTSprite().getWidth(), t.getTSprite().getHeight(), 1, 1, (float)t.getRotation(), 0, 0, t.getTSprite().getWidth(),t.getTSprite().getHeight(), true, true);
+        sBatch.end();
     }
 }

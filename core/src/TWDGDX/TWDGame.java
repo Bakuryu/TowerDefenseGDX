@@ -47,7 +47,7 @@ public class TWDGame extends ApplicationAdapter
         sRen = new SpriteRenderer(entM, corT1);
 
         sGUI = new SideMenuGUI(corT2);
-        tGUI = new TowerGUI(gMap, corT1, entM,sGUI);
+        tGUI = new TowerGUI(gMap, corT1, entM, sGUI);
         //curFrame = new TextureRegion();
     }
 
@@ -60,11 +60,12 @@ public class TWDGame extends ApplicationAdapter
         deltaTime = 400 * Gdx.graphics.getRawDeltaTime();
         fLog.log();
         gMap.render();
-        sRen.render();
+
         agent.update(deltaTime);
         tGUI.render();
         tGUI.update(deltaTime);
         sGUI.render();
+        sRen.render();
 
     }
 }
