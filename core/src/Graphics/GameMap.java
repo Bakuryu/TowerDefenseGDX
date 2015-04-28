@@ -101,7 +101,7 @@ public class GameMap
                     if (value.equals("true"))
                     {
 
-                        System.out.print("1 ");
+                        //System.out.print("1 ");
                         // We set that index of the TileMap as blocked
                         blocked[i][j] = true;
 
@@ -112,17 +112,17 @@ public class GameMap
                     }
                     else
                     {
-                        System.out.print("0 ");
+                        //System.out.print("0 ");
                     }
                 }
                 else
                 {
-                    System.out.print("0 ");
+                    //System.out.print("0 ");
                     free.add(new Rectangle((int)(i * layer.getTileWidth()), (int)((j) * layer.getTileHeight()), (int)layer.getTileWidth(), (int)layer.getTileHeight()));
                 }
 
             }
-            System.out.println("");
+            //.out.println("");
         }
     }
     /* Returns list of blocks on the map that are collidable*/

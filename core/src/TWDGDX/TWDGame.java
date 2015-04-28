@@ -60,12 +60,13 @@ public class TWDGame extends ApplicationAdapter
         deltaTime = 400 * Gdx.graphics.getRawDeltaTime();
         fLog.log();
         gMap.render();
-
+        
         agent.update(deltaTime);
         tGUI.render();
         tGUI.update(deltaTime);
         sGUI.render();
         sRen.render();
+        entM.updateEnts(deltaTime);
 
     }
 }

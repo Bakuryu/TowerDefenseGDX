@@ -10,6 +10,7 @@ import Entity.EntityManager;
 import Entity.TowerEntity;
 import Math.CoordinateTranslator;
 import Math.Point2D;
+import Math.TileConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,6 +41,7 @@ public class TowerGUI
     private Point tileInScreen;
     private EntityManager entM;
     private SideMenuGUI sGUI;
+    private TileConverter tCon;
 
     private boolean isPlacing;
 
@@ -56,6 +58,7 @@ public class TowerGUI
         mouseSP = new Point();
         mouseWP = new Point2D();
         this.gMap = gMap;
+        tCon = new TileConverter();
 
     }
 
@@ -65,9 +68,8 @@ public class TowerGUI
         mouseSP = new Point(input.getX(), input.getY());
         mouseWP = corT.screenToWorld(mouseSP);
 
-        System.out.println("MouseWP: " + mouseWP.getX() + ", " + mouseWP.getY());
-        int tx = convertToTileCord(mouseWP).x;
-        int ty = convertToTileCord(mouseWP).y;
+        //System.out.println("MouseWP: " + mouseWP.getX() + ", " + mouseWP.getY());
+
         //System.out.println("TileCord: " + tx + ", " + ty);
         if (isPlacing)
         {
@@ -91,7 +93,7 @@ public class TowerGUI
 
         checkMouseBounds();
 
-        tileInWorld = new Point2D(convertFromTileCord(convertToTileCord(mouseWP).x, convertToTileCord(mouseWP).y));
+        tileInWorld = new Point2D(tCon.convertFromTileCord(tCon.convertToTileCord(mouseWP).x, tCon.convertToTileCord(mouseWP).y));
         tileInScreen = corT.worldToScreen(tileInWorld);
 
         if (isPlacing)
@@ -139,31 +141,31 @@ public class TowerGUI
 
     }
 
-    private Point convertToTileCord(Point2D p)
-    {
-        int tx = (int) (p.getX() / 2.5);
-        double hMY = p.getY();
-        double hDTF = 100.0 / 35.0;
-        double total = hMY / hDTF;
-
-        int ty = (int) total;
-
-        Point tilePoint = new Point(tx, ty);
-
-        return tilePoint;
-    }
-
-    private Point2D convertFromTileCord(int x, int y)
-    {
-        double wX = 0;
-
-        wX = x * 2.5;
-        double hDTF = (double) 100 / 35;
-        double wY = (y * hDTF);
-
-        Point2D worldPoint = new Point2D(wX, wY);
-        return worldPoint;
-    }
+//    private Point convertToTileCord(Point2D p)
+//    {
+//        int tx = (int) (p.getX() / 2.5);
+//        double hMY = p.getY();
+//        double hDTF = 100.0 / 35.0;
+//        double total = hMY / hDTF;
+//
+//        int ty = (int) total;
+//
+//        Point tilePoint = new Point(tx, ty);
+//
+//        return tilePoint;
+//    }
+//
+//    private Point2D convertFromTileCord(int x, int y)
+//    {
+//        double wX = 0;
+//
+//        wX = x * 2.5;
+//        double hDTF = (double) 100 / 35;
+//        double wY = (y * hDTF);
+//
+//        Point2D worldPoint = new Point2D(wX, wY);
+//        return worldPoint;
+//    }
 
     private void drawRect(int x, int y, int width, int height, int thickness)
     {
@@ -190,7 +192,7 @@ public class TowerGUI
         int cEnd = 0;
         boolean isLegal = true;
         boolean hasBlockedTile = false;
-        Point pTileCord = new Point(convertToTileCord(p));
+        Point pTileCord = new Point(tCon.convertToTileCord(p));
 
         int tx = pTileCord.x;
         int ty = pTileCord.y;
@@ -235,15 +237,15 @@ public class TowerGUI
             rEnd = i + 2;
 
         }
-        System.out.println("DrawTile: " + i + ", " + j);
+        //System.out.println("DrawTile: " + i + ", " + j);
         for (int k = j; k > cEnd; k--)
         {
-            System.out.println("");
+            //System.out.println("");
             for (int l = i; l < rEnd; l++)
             {
-                System.out.print("(" + l + ", " + k + ") ");
-                System.out.print(isNeighborBlocked(l, k) + " ");
-                System.out.print(isTower(l,k));
+//                System.out.print("(" + l + ", " + k + ") ");
+//                System.out.print(isNeighborBlocked(l, k) + " ");
+//                System.out.print(isTower(l,k));
 
                 if (isNeighborBlocked(l, k)|| isTower(l,k))
                 {
@@ -252,7 +254,7 @@ public class TowerGUI
                
             }
         }
-        System.out.println("");
+        //System.out.println("");
         if (hasBlockedTile == false)
         {
             isLegal = true;
@@ -262,13 +264,13 @@ public class TowerGUI
         {
             isLegal = false;
         }
-        System.out.println("IsLegal?: " + isLegal);
+        //System.out.println("IsLegal?: " + isLegal);
         return isLegal;
     }
 
     private boolean isEdgeR(Point2D p)
     {
-        Point pTileCord = new Point(convertToTileCord(p));
+        Point pTileCord = new Point(tCon.convertToTileCord(p));
         return pTileCord.x == 39;
     }
 
@@ -322,8 +324,10 @@ public class TowerGUI
             {
 //                System.out.println("T Pos: " + e.getPosition());
 //                System.out.println("TIW: " + tileInWorld);
-                Point tTilePos = convertToTileCord(e.getPosition());
-                if(tTilePos.equals(mTileCord))
+                //if()
+                TowerEntity t = (TowerEntity)e;
+                
+                if((t.getTilesCovered().contains(mTileCord)))
                 {
                     TowerBlock = true;
                 }

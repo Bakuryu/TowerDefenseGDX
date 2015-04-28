@@ -45,7 +45,7 @@ public class EntityManager
     }
 
     /* Update method used to update all entities in the array list*/
-    public void updateEnts(int t) 
+    public void updateEnts(float t) 
     {
         for (Entity ents : e)
         {
