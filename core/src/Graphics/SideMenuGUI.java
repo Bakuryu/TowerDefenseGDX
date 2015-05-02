@@ -6,9 +6,12 @@
 package Graphics;
 
 import Math.CoordinateTranslator;
+import Math.PointManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,41 +27,44 @@ public class SideMenuGUI
     private CoordinateTranslator corT2;
     private OrthographicCamera cam;
     private SpriteBatch sBatch;
-    private Texture whiteRect;
-    private TextureRegion rect;
+
     private Skin skin;
     private Stage stage;
     private String sType;
+    private BitmapFont font;
+    private int towerPoints;
+    private PointManager pointM;
+    private ShapeDrawer sDraw;
 
-    public SideMenuGUI(CoordinateTranslator corT2)
+    public SideMenuGUI(CoordinateTranslator corT2, PointManager pM)
     {
-        sType = "norm";
+        sDraw = new ShapeDrawer();
+        pointM = pM;
+        sType = "reg";
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage();
-        whiteRect = new Texture("graphics/whiteRect.png");
-        rect = new TextureRegion(whiteRect);
+
         sBatch = new SpriteBatch();
         this.corT2 = corT2;
-        cam = new OrthographicCamera(80, 560);
+        cam = new OrthographicCamera(112, 560);
+        font = new BitmapFont();
 
     }
 
     public void render()
     {
         cam.position.set(640f, 0, 0);
+
+        sDraw.drawRect((int) cam.position.x, (int) cam.position.y, 112, 560, 2, Color.WHITE);
+        sDraw.drawLine(corT2.worldToScreen(2, 94).x, corT2.worldToScreen(2, 94).y, corT2.worldToScreen(15, 94).x, corT2.worldToScreen(15, 94).y, 2, Color.WHITE);
         sBatch.begin();
-        drawRect((int) cam.position.x, (int) cam.position.y, 10, 10, 4);
+        font.draw(sBatch, "Tower Points", corT2.worldToScreen(2, 98).x, corT2.worldToScreen(2, 98).y);
+
+        font.draw(sBatch, "" + (pointM.getPoints()), corT2.worldToScreen(8, 92).x, corT2.worldToScreen(8, 92).y);
         sBatch.end();
+
     }
 
-    private void drawRect(int x, int y, int width, int height, int thickness)
-    {
-        sBatch.draw(rect, x, y, width, thickness);
-        sBatch.draw(rect, x, y, thickness, height);
-        sBatch.draw(rect, x, y + height - thickness, width, thickness);
-        sBatch.draw(rect, x + width - thickness, y, thickness, height);
-    }
-    
     public String getSelectedType()
     {
         return sType;

@@ -81,9 +81,9 @@ public class TowerEntity extends Entity
 
     private void createTower()
     {
-        if (type == "norm")
+        if (type == "reg")
         {
-            towerSpr = new Texture("graphics/tower32x32.png");
+            towerSpr = new Texture("graphics/RegTower.png");
             coolDown = 5;
             viewDist = 30;
             rotateSpeed = 10;

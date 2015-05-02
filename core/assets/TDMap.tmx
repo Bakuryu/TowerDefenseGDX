@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="45" height="35" tilewidth="16" tileheight="16" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="47" height="35" tilewidth="16" tileheight="16" nextobjectid="1">
  <tileset firstgid="1" name="PacMan" tilewidth="16" tileheight="16">
   <image source="graphics/PacMan.png" width="160" height="160"/>
   <tile id="0">
@@ -128,12 +128,12 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="101" name="Tower32x32" tilewidth="32" tileheight="32">
-  <image source="graphics/Tower32x32.png" width="32" height="32"/>
+ <tileset firstgid="101" name="RegTower" tilewidth="32" tileheight="32">
+  <image source="graphics/RegTower.png" width="32" height="32"/>
  </tileset>
- <layer name="Collision" width="45" height="35">
+ <layer name="Collision" width="47" height="35">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2X0Q6CMAxFp6KSGIyaIGgiP+L//5fldbGOlnZrZm9yXpZBTqBlpQkh7I1yCN9zRtYt5IKsu7NsanK+AtsE7YI9GkyI8ws4Jq4dgHcBsOc8r58KObnzbzZBp353is4dcq+16Sp37oE7gcGAs5W4c55wnSW+Y5TeiPuE42zpfFnqHL8fd9Zxjmtjrm9ufa7lxnSmnjeSYPNzDT3oznmcsfrN8f9HmZ+t5J/mjZJxZ5mkZkbuXKcZ6izjzrxIOY/AIxNT5NQk9j8R5w/5OCi/nBgAAA==
+   H4sIAAAAAAAAC+2Z3QrCMAxGo5s/IBMV5pzgXsT3fy8zdtMLaZalMV3NB+eqpRy2ZA2sBoBdpuwhnjOxbpkLse7uOinZ/YpsCY4z9mgwEO4v5ECc0SFvA6jnPq6fjNws3DegVyeVsntDnClJA+6+BvcWuTPoVKyncN1zirvbROKe4tvN6Z1vvbTUPac7lusevjNrJO6ad/8cbkz3sGas64e6A2PuLch7TwI1v5fUq2t25842qeHO7znlX2cC67i7Tdw9fcb5SHMG1gx3Ri3Z/YH0P2IIvGqY/m3E9j8J9w8h7OdvtBkAAA==
   </data>
  </layer>
 </map>

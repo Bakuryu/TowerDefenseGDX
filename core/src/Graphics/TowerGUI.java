@@ -11,6 +11,7 @@ import Entity.EntityManager;
 import Entity.TowerEntity;
 import Math.CoordinateTranslator;
 import Math.Point2D;
+import Math.PointManager;
 import Math.TileConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -32,32 +33,36 @@ public class TowerGUI
     private Input input;
     private Point mouseSP;
     private Point2D mouseWP;
+    private Point2D noConsMouseWP;
     private CoordinateTranslator corT;
     private ShapeRenderer sRender;
     private GameMap gMap;
-    private Texture whiteRect;
+
     private SpriteBatch sBatch;
-    private TextureRegion rect;
+
     private Point2D tileInWorld;
     private Point tileInScreen;
     private EntityManager entM;
     private SideMenuGUI sGUI;
     private TileConverter tCon;
+    private PointManager pointM;
+    private ShapeDrawer sDraw;
 
     private boolean isPlacing;
 
-    public TowerGUI(GameMap gMap, CoordinateTranslator corT, EntityManager entM, SideMenuGUI sGUI)
+    public TowerGUI(GameMap gMap, CoordinateTranslator corT, EntityManager entM, SideMenuGUI sGUI, PointManager pM)
     {
+        sDraw = new ShapeDrawer();
+        pointM = pM;
         this.sGUI = sGUI;
         this.entM = entM;
         isPlacing = true;
-        whiteRect = new Texture("graphics/whiteRect.png");
         sRender = new ShapeRenderer();
         sBatch = new SpriteBatch();
-        rect = new TextureRegion(whiteRect);
         this.corT = corT;
         mouseSP = new Point();
         mouseWP = new Point2D();
+        noConsMouseWP = new Point2D();
         this.gMap = gMap;
         tCon = new TileConverter();
 
@@ -66,26 +71,34 @@ public class TowerGUI
     public void update(float t)
     {
 //        drawAgentHitBox((AgentEntity)entM.getEnts().get(0));
-        
+
         input = Gdx.input;
         mouseSP = new Point(input.getX(), input.getY());
         mouseWP = corT.screenToWorld(mouseSP);
+        noConsMouseWP = new Point2D(mouseWP);
 
-        //System.out.println("MouseWP: " + mouseWP.getX() + ", " + mouseWP.getY());
+        System.out.println("MouseWP: " + mouseWP.getX() + ", " + mouseWP.getY());
 
         //System.out.println("TileCord: " + tx + ", " + ty);
-        if (isPlacing)
+        if (isPlacing && !(noConsMouseWP.getX() > 100))
         {
             if (input.isButtonPressed(Input.Buttons.LEFT))
             {
-                if (isLegal(tileInWorld))
+                if (isLegal(tileInWorld) && pointM.getPoints() >= 3)
                 {
 
-                        String type = sGUI.getSelectedType();
-                        TowerEntity tEntity = new TowerEntity(type, tileInWorld, entM);
-                        entM.addEnt(tEntity);
-                        
-                    
+                    String type = sGUI.getSelectedType();
+                    if (type == "reg")
+                    {
+                        pointM.subPoints(3);
+                    }
+                    else
+                    {
+                        pointM.subPoints(8);
+                    }
+                    TowerEntity tEntity = new TowerEntity(type, tileInWorld, entM);
+                    entM.addEnt(tEntity);
+
                 }
             }
         }
@@ -99,93 +112,45 @@ public class TowerGUI
 
         tileInWorld = new Point2D(tCon.convertFromTileCord(tCon.convertToTileCord(mouseWP).x, tCon.convertToTileCord(mouseWP).y));
         tileInScreen = corT.worldToScreen(tileInWorld);
-
+        System.out.println("DiffMouse: " + mouseWP);
         if (isPlacing)
         {
             for (Rectangle r : gMap.getFreeRect())
             {
 
-                sBatch.setColor(Color.WHITE);
-                sBatch.begin();
-                drawRect(r.x, r.y, r.width, r.height, 1);
-                sBatch.end();
+                sDraw.drawRect(r.x, r.y, r.width, r.height, 1, Color.WHITE);
+
             }
 
-            sBatch.begin();
-
-            if (isLegal(tileInWorld))
+            if (isLegal(tileInWorld) && !(noConsMouseWP.getX() > 100))
             {
 
-                sBatch.setColor(Color.GREEN);
                 if (isEdgeR(tileInWorld))
                 {
-                    drawRect((int) tileInScreen.getX() - 16, (int) tileInScreen.getY() - 16, 32, 32, 4);
+                    sDraw.drawRect((int) tileInScreen.getX() - 16, (int) tileInScreen.getY() - 16, 32, 32, 4, Color.GREEN);
                 }
                 else
                 {
-                    drawRect((int) tileInScreen.getX(), (int) tileInScreen.getY() - 16, 32, 32, 4);
+                    sDraw.drawRect((int) tileInScreen.getX(), (int) tileInScreen.getY() - 16, 32, 32, 4, Color.GREEN);
                 }
 
             }
 
-            if (!isLegal(tileInWorld))
+            if (!isLegal(tileInWorld) && !(noConsMouseWP.getX() > 100))
             {
-                sBatch.setColor(Color.RED);
+
                 if (isEdgeR(tileInWorld))
                 {
-                    drawRect((int) tileInScreen.getX() - 16, (int) tileInScreen.getY() - 16, 32, 32, 4);
+                    sDraw.drawRect((int) tileInScreen.getX() - 16, (int) tileInScreen.getY() - 16, 32, 32, 4, Color.RED);
                 }
                 else
                 {
-                    drawRect((int) tileInScreen.getX(), (int) tileInScreen.getY() - 16, 32, 32, 4);
+                    sDraw.drawRect((int) tileInScreen.getX(), (int) tileInScreen.getY() - 16, 32, 32, 4, Color.RED);
                 }
             }
-            sBatch.end();
+
         }
 
-    }
-
-//    private Point convertToTileCord(Point2D p)
-//    {
-//        int tx = (int) (p.getX() / 2.5);
-//        double hMY = p.getY();
-//        double hDTF = 100.0 / 35.0;
-//        double total = hMY / hDTF;
-//
-//        int ty = (int) total;
-//
-//        Point tilePoint = new Point(tx, ty);
-//
-//        return tilePoint;
-//    }
-//
-//    private Point2D convertFromTileCord(int x, int y)
-//    {
-//        double wX = 0;
-//
-//        wX = x * 2.5;
-//        double hDTF = (double) 100 / 35;
-//        double wY = (y * hDTF);
-//
-//        Point2D worldPoint = new Point2D(wX, wY);
-//        return worldPoint;
-//    }
-
-    private void drawRect(int x, int y, int width, int height, int thickness)
-    {
-        sBatch.draw(rect, x, y, width, thickness);
-        sBatch.draw(rect, x, y, thickness, height);
-        sBatch.draw(rect, x, y + height - thickness, width, thickness);
-        sBatch.draw(rect, x + width - thickness, y, thickness, height);
-    }
-
-    private void drawLine(int x1, int y1, int x2, int y2, int thickness)
-    {
-        int dx = x2 - x1;
-        int dy = y2 - y1;
-        float dist = (float) Math.sqrt(dx * dx + dy * dy);
-        float rad = (float) Math.atan2(dy, dx);
-        //sBatch.draw(rect, x1, y1, dist, thickness, 0, 0, rad);
     }
 
     private boolean isLegal(Point2D p)
@@ -251,11 +216,11 @@ public class TowerGUI
 //                System.out.print(isNeighborBlocked(l, k) + " ");
 //                System.out.print(isTower(l,k));
 
-                if (isNeighborBlocked(l, k)|| isTower(l,k))
+                if (isNeighborBlocked(l, k) || isTower(l, k))
                 {
                     hasBlockedTile = true;
                 }
-               
+
             }
         }
         //System.out.println("");
@@ -317,21 +282,21 @@ public class TowerGUI
     {
         return isPlacing;
     }
-    
+
     private boolean isTower(int x, int y)
     {
-        Point mTileCord = new Point(x,y);
+        Point mTileCord = new Point(x, y);
         boolean TowerBlock = false;
-        for(Entity e : entM.getEnts())
+        for (Entity e : entM.getEnts())
         {
-            if(e instanceof TowerEntity)
+            if (e instanceof TowerEntity)
             {
 //                System.out.println("T Pos: " + e.getPosition());
 //                System.out.println("TIW: " + tileInWorld);
                 //if()
-                TowerEntity t = (TowerEntity)e;
-                
-                if((t.getTilesCovered().contains(mTileCord)))
+                TowerEntity t = (TowerEntity) e;
+
+                if ((t.getTilesCovered().contains(mTileCord)))
                 {
                     TowerBlock = true;
                 }
@@ -339,12 +304,12 @@ public class TowerGUI
         }
         return TowerBlock;
     }
-    
+
     public void drawAgentHitBox(AgentEntity a)
     {
-     sBatch.begin();
-     sBatch.setColor(Color.WHITE);
-     drawRect(a.getCollider().getHitBox().x,a.getCollider().getHitBox().y,a.getCollider().getHitBox().width,a.getCollider().getHitBox().height,2);
-     sBatch.end();
+        sBatch.begin();
+        sBatch.setColor(Color.WHITE);
+        sDraw.drawRect(a.getCollider().getHitBox().x, a.getCollider().getHitBox().y, a.getCollider().getHitBox().width, a.getCollider().getHitBox().height, 2, Color.WHITE);
+        sBatch.end();
     }
 }

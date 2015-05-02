@@ -56,7 +56,7 @@ public class GameMap
         tRenderer = new OrthogonalTiledMapRenderer(map);
         mapProp = map.getProperties();
         mapLayer = map.getLayers();
-        numTilesX = mapProp.get("width", Integer.class)-5;
+        numTilesX = mapProp.get("width", Integer.class)-7;
         numTilesY = mapProp.get("height", Integer.class);
         free = new ArrayList<Rectangle>();
         blocks = new ArrayList<Rectangle>();

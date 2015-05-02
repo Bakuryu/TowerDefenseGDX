@@ -21,6 +21,7 @@ public class AnimationManager
     private Texture pinky;
     private Texture clyde;
     private Texture pacman;
+    private Texture scared;
     private TextureRegion[] animFrames;
     private int AFRAME_COL;
     private int AFRAME_ROW;
@@ -48,6 +49,7 @@ public class AnimationManager
         pinky = new Texture("graphics/PinkyAnim2.png");
         clyde = new Texture("graphics/ClydeAnim2.png");
         pacman = new Texture("graphics/PacmanAnim.png");
+        scared = new Texture("graphics/BlueGhostAnim.png");
 
     }
 
@@ -107,6 +109,23 @@ public class AnimationManager
         if (type == "Clyde")
         {
             TextureRegion[][] tmp = TextureRegion.split(clyde, clyde.getWidth() / 2, clyde.getHeight());
+            animFrames = new TextureRegion[AFRAME_ROW * AFRAME_COL];
+            int index = 0;
+            for (int i = 0; i < AFRAME_ROW; i++)
+            {
+                for (int j = 0; j < AFRAME_COL; j++)
+                {
+                    animFrames[index++] = tmp[i][j];
+                }
+
+            }
+            anim = new Animation(0.15f, animFrames);
+        }
+
+
+        if (type == "Scared")
+        {
+            TextureRegion[][] tmp = TextureRegion.split(scared, scared.getWidth() / 2, scared.getHeight());
             animFrames = new TextureRegion[AFRAME_ROW * AFRAME_COL];
             int index = 0;
             for (int i = 0; i < AFRAME_ROW; i++)

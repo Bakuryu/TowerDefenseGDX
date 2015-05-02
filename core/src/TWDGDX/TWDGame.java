@@ -9,6 +9,7 @@ import Graphics.SideMenuGUI;
 import Graphics.SpriteRenderer;
 import Math.CoordinateTranslator;
 import Math.Point2D;
+import Math.PointManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -29,6 +30,7 @@ public class TWDGame extends ApplicationAdapter
     private TowerGUI tGUI;
     private Stage stage;
     private SideMenuGUI sGUI;
+    private PointManager pointM;
 
     private CoordinateTranslator corT1;
     private CoordinateTranslator corT2;
@@ -42,17 +44,18 @@ public class TWDGame extends ApplicationAdapter
         deltaTime = 0f;
         gMap = new GameMap(stage);
         entM = new EntityManager();
-
+        pointM = new PointManager();
+        pointM.addPoints(6);
         player = new PlayerEntity(10, 73);
-        agent = new AgentEntity(72.5, -5.71, "Blinky",player);
+        agent = new AgentEntity(70, -5.71, "Blinky",player,pointM);
         entM.addEnt(agent);
         entM.addEnt(player);
-        corT1 = new CoordinateTranslator(Gdx.graphics.getWidth() - 80, Gdx.graphics.getHeight(), 100, 100, new Point2D(0, 0));
-        corT2 = new CoordinateTranslator(Gdx.graphics.getWidth() - 640, Gdx.graphics.getHeight(), 12.5, 100, new Point2D(0, 0));
+        corT1 = new CoordinateTranslator(Gdx.graphics.getWidth() - 112, Gdx.graphics.getHeight(), 100, 100, new Point2D(0, 0));
+        corT2 = new CoordinateTranslator(Gdx.graphics.getWidth() - 640, Gdx.graphics.getHeight(), 17.5, 100, new Point2D(-100, 0));
         sRen = new SpriteRenderer(entM, corT1);
 
-        sGUI = new SideMenuGUI(corT2);
-        tGUI = new TowerGUI(gMap, corT1, entM, sGUI);
+        sGUI = new SideMenuGUI(corT2,pointM);
+        tGUI = new TowerGUI(gMap, corT1, entM, sGUI,pointM);
         //curFrame = new TextureRegion();
     }
 
@@ -64,7 +67,7 @@ public class TWDGame extends ApplicationAdapter
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         deltaTime = 400 * Gdx.graphics.getRawDeltaTime();
 
-        fLog.log();
+        //fLog.log();
         gMap.render();
 
         tGUI.render();

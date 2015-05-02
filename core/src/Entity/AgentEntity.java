@@ -8,6 +8,7 @@ package Entity;
 import Components.Collider;
 import Graphics.AnimationManager;
 import Math.Point2D;
+import Math.PointManager;
 import Math.Vector2D;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import java.util.LinkedList;
@@ -33,6 +34,7 @@ public class AgentEntity extends Entity
     private Collider hitBox;
     private boolean isAlive;
     private PlayerEntity p;
+    private PointManager pointM;
 
     /**
      * Create an AgentEntity at location (x,y).
@@ -40,9 +42,11 @@ public class AgentEntity extends Entity
      * @param x Agent's starting x coordinate
      * @param y Agent's starting y coordinate
      * @param type
+     * @param p
      */
-    public AgentEntity(double x, double y, String type, PlayerEntity p)
+    public AgentEntity(double x, double y, String type, PlayerEntity p, PointManager pM)
     {
+        pointM = pM;
         this.p = p;
         isAlive = true;
         currentTargetP = new Point2D();
@@ -69,8 +73,13 @@ public class AgentEntity extends Entity
     @Override
     public void update(float t)
     {
-
+        //System.out.println("Position: " + position);
         centerPos.set(new Point2D(position.getX() + 1, position.getY() + 4));
+        
+        if(!isBacktracking)
+        {
+            anim = animM.setAgentAnimation(enemyType);
+        }
         if (!isBacktracking && !path.isEmpty() && !(isAgentNear(this, path.getFirst())))
         {
             Vector2D dist = path.getFirst().minus(this.position);
@@ -84,12 +93,12 @@ public class AgentEntity extends Entity
             position.set(newPos);
         }
         
-        if(isCollidingPlayer())
-        {
-            p.takeDmg(dmg);
-            takeDmg(hp);
-            return;
-        }
+//        if(isCollidingPlayer())
+//        {
+//            p.takeDmg(dmg);
+//            takeDmg(hp);
+//            return;
+//        }
 
         if (isBacktracking && !backtrack.isEmpty() && !isAgentNear(this, backtrack.getFirst()))
         {
@@ -101,15 +110,22 @@ public class AgentEntity extends Entity
             Point2D newPos = new Point2D(nX, nY);
             position.set(newPos);
         }
+        
+        if(isBacktracking)
+        {
+            anim = animM.setAgentAnimation("Scared");
+        }
 
         if (!isBacktracking && !path.isEmpty() && isAgentNear(this, path.getFirst()))
         {
+           // System.out.println("Position:" + position);
             backtrack.addFirst(path.getFirst());
             path.remove();
         }
 
         if (isBacktracking && !backtrack.isEmpty() && isAgentNear(this, backtrack.getFirst()))
         {
+           // System.out.println("Position:" + position);
             path.addFirst(backtrack.getFirst());
             backtrack.remove();
         }
@@ -135,14 +151,14 @@ public class AgentEntity extends Entity
 
     private void generatePath()
     {
-        path.add(new Point2D(72.5, 5.72));
-        path.add(new Point2D(92, 5.72));
-        path.add(new Point2D(92, 31.43));
+        path.add(new Point2D(70, 3));
+        path.add(new Point2D(93, 3));
+        path.add(new Point2D(93, 31.43));
         path.add(new Point2D(12.5, 31.43));
-        path.add(new Point2D(12.5, 45.72));
-        path.add(new Point2D(92, 45.72));
-        path.add(new Point2D(92, 77.15));
-        path.add(new Point2D(25, 77.15));
+        path.add(new Point2D(12.5, 46));
+        path.add(new Point2D(93, 46));
+        path.add(new Point2D(93, 77.30));
+        path.add(new Point2D(25, 77.30));
         path.add(new Point2D(22.5, 70));
         path.add(new Point2D(10, 70));
     }
@@ -152,6 +168,10 @@ public class AgentEntity extends Entity
         hp -= dmg;
         if(hp == 0)
         {
+            if(enemyType == "Blinky")
+            {
+                pointM.addPoints(1);
+            }
             isAlive = false;
         }
     }
@@ -160,12 +180,12 @@ public class AgentEntity extends Entity
     {
         boolean closeX = false;
         boolean closeY = false;
-        if (Math.abs(a.getPosition().getX() - dest.getX()) < 1)
+        if (Math.abs(a.getPosition().getX() - dest.getX()) < 0.5)
         {
             closeX = true;
         }
 
-        if (Math.abs(a.getPosition().getY() - dest.getY()) < 1)
+        if (Math.abs(a.getPosition().getY() - dest.getY()) < 0.5)
         {
             closeY = true;
         }

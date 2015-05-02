@@ -26,9 +26,7 @@ public class BulletEntity extends Entity
     private Point2D target;
     private Vector2D targetVector;
     private Collider hitBox;
-    private SpriteBatch sBatch;
-    private Texture whiteRect;
-    private TextureRegion rect;
+
     private AgentEntity targetEntity;
     private TowerEntity bulletOwner;
 
@@ -37,10 +35,6 @@ public class BulletEntity extends Entity
         bulletOwner = t;
         this.type = t.getTType();
         position = new Point2D(t.getTCenterPoint());
-        sBatch = new SpriteBatch();
-
-        whiteRect = new Texture("graphics/whiteRect.png");
-        rect = new TextureRegion(whiteRect);
         target = a.getCenterPos();
         targetEntity = a;
         createBullet();
@@ -63,19 +57,18 @@ public class BulletEntity extends Entity
             targetEntity.takeDmg(1);
         }
         
-        sBatch.begin();
-        sBatch.setColor(Color.WHITE);
-        drawRect(hitBox.getHitBox().x,hitBox.getHitBox().y,hitBox.getHitBox().width,hitBox.getHitBox().height,2);
-        sBatch.end();
+
+//        sDraw.drawRect(hitBox.getHitBox().x,hitBox.getHitBox().y,hitBox.getHitBox().width,hitBox.getHitBox().height,2,Color.WHITE);
+
         
 
     }
 
     private void createBullet()
     {
-        if (type == "norm")
+        if (type == "reg")
         {
-            bullSpr = new Texture("graphics/normalBullet.png");
+            bullSpr = new Texture("graphics/RegBullet.png");
 
             hitBox = new Collider(position, 8, 8);
             speed = 150;
@@ -88,13 +81,6 @@ public class BulletEntity extends Entity
         return bullSpr;
     }
 
-    private void drawRect(int x, int y, int width, int height, int thickness)
-    {
-        sBatch.draw(rect, x, y, width, thickness);
-        sBatch.draw(rect, x, y, thickness, height);
-        sBatch.draw(rect, x, y + height - thickness, width, thickness);
-        sBatch.draw(rect, x + width - thickness, y, thickness, height);
-    }
     
     public Collider getCollider()
     {

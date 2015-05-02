@@ -110,7 +110,7 @@ public class SpriteRenderer
         curFrame = anim.getKeyFrame(stateTime, true);
         sBatch.begin();
         Point pScrPos = new Point(corT.worldToScreen(p.getPosition()));
-        p.getCollider().updatePos(pScrPos);
+        //p.getCollider().updatePos(pScrPos);
 
         
 
