@@ -2,6 +2,7 @@ package TWDGDX;
 
 import Entity.AgentEntity;
 import Entity.EntityManager;
+import Entity.PlayerEntity;
 import Graphics.TowerGUI;
 import Graphics.GameMap;
 import Graphics.SideMenuGUI;
@@ -21,6 +22,7 @@ public class TWDGame extends ApplicationAdapter
     private GameMap gMap;
     private EntityManager entM;
     private AgentEntity agent;
+    private PlayerEntity player;
     private float deltaTime;
     private SpriteRenderer sRen;
     private FPSLogger fLog;
@@ -40,8 +42,11 @@ public class TWDGame extends ApplicationAdapter
         deltaTime = 0f;
         gMap = new GameMap(stage);
         entM = new EntityManager();
-        agent = new AgentEntity(72.5, -5.71, "Blinky");
+
+        player = new PlayerEntity(10, 73);
+        agent = new AgentEntity(72.5, -5.71, "Blinky",player);
         entM.addEnt(agent);
+        entM.addEnt(player);
         corT1 = new CoordinateTranslator(Gdx.graphics.getWidth() - 80, Gdx.graphics.getHeight(), 100, 100, new Point2D(0, 0));
         corT2 = new CoordinateTranslator(Gdx.graphics.getWidth() - 640, Gdx.graphics.getHeight(), 12.5, 100, new Point2D(0, 0));
         sRen = new SpriteRenderer(entM, corT1);
@@ -58,15 +63,21 @@ public class TWDGame extends ApplicationAdapter
         stage.draw();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         deltaTime = 400 * Gdx.graphics.getRawDeltaTime();
+
         fLog.log();
         gMap.render();
-        
-        agent.update(deltaTime);
+
         tGUI.render();
-        tGUI.update(deltaTime);
+
         sGUI.render();
         sRen.render();
-        entM.updateEnts(deltaTime);
+        update();
 
+    }
+
+    public void update()
+    {
+        tGUI.update(deltaTime);
+        entM.updateEnts(deltaTime);
     }
 }

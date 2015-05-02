@@ -5,6 +5,7 @@
  */
 package Graphics;
 
+import Entity.AgentEntity;
 import Entity.Entity;
 import Entity.EntityManager;
 import Entity.TowerEntity;
@@ -64,6 +65,8 @@ public class TowerGUI
 
     public void update(float t)
     {
+//        drawAgentHitBox((AgentEntity)entM.getEnts().get(0));
+        
         input = Gdx.input;
         mouseSP = new Point(input.getX(), input.getY());
         mouseWP = corT.screenToWorld(mouseSP);
@@ -81,6 +84,7 @@ public class TowerGUI
                         String type = sGUI.getSelectedType();
                         TowerEntity tEntity = new TowerEntity(type, tileInWorld, entM);
                         entM.addEnt(tEntity);
+                        
                     
                 }
             }
@@ -334,5 +338,13 @@ public class TowerGUI
             }
         }
         return TowerBlock;
+    }
+    
+    public void drawAgentHitBox(AgentEntity a)
+    {
+     sBatch.begin();
+     sBatch.setColor(Color.WHITE);
+     drawRect(a.getCollider().getHitBox().x,a.getCollider().getHitBox().y,a.getCollider().getHitBox().width,a.getCollider().getHitBox().height,2);
+     sBatch.end();
     }
 }

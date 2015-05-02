@@ -5,12 +5,12 @@
  */
 package Entity;
 
+import Components.Collider;
 import Graphics.AnimationManager;
 import Math.Point2D;
 import Math.Vector2D;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import java.util.LinkedList;
-
 
 /**
  *
@@ -24,10 +24,15 @@ public class AgentEntity extends Entity
     private Animation anim;
     private int speed;
     private int hp;
+    private int dmg;
     private LinkedList<Point2D> path;
     private LinkedList<Point2D> backtrack;
     private Point2D currentTargetP;
     private boolean isBacktracking;
+    private Point2D centerPos;
+    private Collider hitBox;
+    private boolean isAlive;
+    private PlayerEntity p;
 
     /**
      * Create an AgentEntity at location (x,y).
@@ -36,17 +41,20 @@ public class AgentEntity extends Entity
      * @param y Agent's starting y coordinate
      * @param type
      */
-    public AgentEntity(double x, double y, String type) 
+    public AgentEntity(double x, double y, String type, PlayerEntity p)
     {
+        this.p = p;
+        isAlive = true;
         currentTargetP = new Point2D();
         position = new Point2D(x, y);
+        centerPos = new Point2D(x + 2, y + 4);
         enemyType = type;
         animM = new AnimationManager();
-        anim = animM.setAnimation(type);
+        hitBox = new Collider(position, 30, 29);
         path = new LinkedList<Point2D>();
         backtrack = new LinkedList<Point2D>();
-        speed = 50;
         isBacktracking = false;
+        createAgent(type);
         generatePath();
 
     }
@@ -62,6 +70,7 @@ public class AgentEntity extends Entity
     public void update(float t)
     {
 
+        centerPos.set(new Point2D(position.getX() + 1, position.getY() + 4));
         if (!isBacktracking && !path.isEmpty() && !(isAgentNear(this, path.getFirst())))
         {
             Vector2D dist = path.getFirst().minus(this.position);
@@ -69,8 +78,17 @@ public class AgentEntity extends Entity
 
             double nX = position.getX() + dist.getX() * speed * t / 1000;
             double nY = position.getY() + dist.getY() * speed * t / 1000;
+
             Point2D newPos = new Point2D(nX, nY);
+
             position.set(newPos);
+        }
+        
+        if(isCollidingPlayer())
+        {
+            p.takeDmg(dmg);
+            takeDmg(hp);
+            return;
         }
 
         if (isBacktracking && !backtrack.isEmpty() && !isAgentNear(this, backtrack.getFirst()))
@@ -101,7 +119,7 @@ public class AgentEntity extends Entity
             isBacktracking = false;
             //Collections.reverse(path);
         }
-        
+
         if (!isBacktracking && path.isEmpty())
         {
             isBacktracking = true;
@@ -125,8 +143,17 @@ public class AgentEntity extends Entity
         path.add(new Point2D(92, 45.72));
         path.add(new Point2D(92, 77.15));
         path.add(new Point2D(25, 77.15));
-        path.add(new Point2D(22.5, 71.29));
-        path.add(new Point2D(15, 71.29));
+        path.add(new Point2D(22.5, 70));
+        path.add(new Point2D(10, 70));
+    }
+
+    public void takeDmg(int dmg)
+    {
+        hp -= dmg;
+        if(hp == 0)
+        {
+            isAlive = false;
+        }
     }
 
     public boolean isAgentNear(AgentEntity a, Point2D dest)
@@ -144,6 +171,44 @@ public class AgentEntity extends Entity
         }
 
         return (closeX && closeY);
+    }
+
+    public void createAgent(String type)
+    {
+        if (type == "Blinky")
+        {
+            anim = animM.setAgentAnimation(type);
+            speed = 50;
+            hp = 5;
+            dmg = 1;
+        }
+    }
+    
+    public boolean isAlive()
+    {
+        return isAlive;
+    }
+    
+    public boolean isCollidingPlayer()
+    {
+         boolean pCollision = false;
+        if (hitBox.checkEntityCollision(this.getCollider(), p.getCollider()))
+        {
+            pCollision = true;
+        }
+        return pCollision;
+    }
+    
+    
+
+    public Point2D getCenterPos()
+    {
+        return centerPos;
+    }
+
+    public Collider getCollider()
+    {
+        return hitBox;
     }
 
 }
