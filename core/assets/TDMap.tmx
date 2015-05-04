@@ -42,6 +42,16 @@
     <property name="blocked" value="true"/>
    </properties>
   </tile>
+  <tile id="8">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
   <tile id="10">
    <properties>
     <property name="blocked" value="true"/>
@@ -78,6 +88,16 @@
    </properties>
   </tile>
   <tile id="17">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="19">
    <properties>
     <property name="blocked" value="true"/>
    </properties>
@@ -133,7 +153,7 @@
  </tileset>
  <layer name="Collision" width="47" height="35">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Z3QrCMAxGo5s/IBMV5pzgXsT3fy8zdtMLaZalMV3NB+eqpRy2ZA2sBoBdpuwhnjOxbpkLse7uOinZ/YpsCY4z9mgwEO4v5ECc0SFvA6jnPq6fjNws3DegVyeVsntDnClJA+6+BvcWuTPoVKyncN1zirvbROKe4tvN6Z1vvbTUPac7lusevjNrJO6ad/8cbkz3sGas64e6A2PuLch7TwI1v5fUq2t25842qeHO7znlX2cC67i7Tdw9fcb5SHMG1gx3Ri3Z/YH0P2IIvGqY/m3E9j8J9w8h7OdvtBkAAA==
+   H4sIAAAAAAAAC+2ZUQrCMAxAo06dysSpcyq4i3j/e5nSn31Ik9hk7aSBRz9WxiNt1tBVALAm2DLmWLCBcByRHbIPjA3xDqs4Ec+d+wW5Bsac3Uve9YNyb5ElQc2YY8FAuL/Af0dC7+iRdwKovLvnh0RuKdwXYLdPVsbulrXbQHGfg3uH3AT0JtY+pO45RXFPEzHuGt9uSe18q6Vf3XM6Y6Xu4zVLTYy75dnP4Sx0H++Z1PuHOgND7h3E114MVP/+T7U6Z3dpbyOhZsyR9u9Thas9zp1Eru6cO4lc3UvefZS880I775x7MS3cHZZ2D0yto9Yo7VE57tQ6ao3a7nfkMRHDyKsC/28jNP9JuH8ApS/ARbQZAAA=
   </data>
  </layer>
 </map>

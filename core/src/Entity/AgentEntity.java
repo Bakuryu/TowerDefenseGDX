@@ -43,6 +43,7 @@ public class AgentEntity extends Entity
      * @param y Agent's starting y coordinate
      * @param type
      * @param p
+     * @param pM
      */
     public AgentEntity(double x, double y, String type, PlayerEntity p, PointManager pM)
     {
@@ -58,8 +59,6 @@ public class AgentEntity extends Entity
         path = new LinkedList<Point2D>();
         backtrack = new LinkedList<Point2D>();
         isBacktracking = false;
-        createAgent(type);
-        generatePath();
 
     }
 
@@ -75,8 +74,8 @@ public class AgentEntity extends Entity
     {
         //System.out.println("Position: " + position);
         centerPos.set(new Point2D(position.getX() + 1, position.getY() + 4));
-        
-        if(!isBacktracking)
+
+        if (!isBacktracking)
         {
             anim = animM.setAgentAnimation(enemyType);
         }
@@ -92,14 +91,13 @@ public class AgentEntity extends Entity
 
             position.set(newPos);
         }
-        
-//        if(isCollidingPlayer())
-//        {
-//            p.takeDmg(dmg);
-//            takeDmg(hp);
-//            return;
-//        }
 
+        if(isCollidingPlayer())
+        {
+            p.takeDmg(dmg);
+            takeDmg(hp);
+            return;
+        }
         if (isBacktracking && !backtrack.isEmpty() && !isAgentNear(this, backtrack.getFirst()))
         {
             Vector2D dist = backtrack.getFirst().minus(this.position);
@@ -110,22 +108,22 @@ public class AgentEntity extends Entity
             Point2D newPos = new Point2D(nX, nY);
             position.set(newPos);
         }
-        
-        if(isBacktracking)
+
+        if (isBacktracking)
         {
             anim = animM.setAgentAnimation("Scared");
         }
 
         if (!isBacktracking && !path.isEmpty() && isAgentNear(this, path.getFirst()))
         {
-           // System.out.println("Position:" + position);
+            // System.out.println("Position:" + position);
             backtrack.addFirst(path.getFirst());
             path.remove();
         }
 
         if (isBacktracking && !backtrack.isEmpty() && isAgentNear(this, backtrack.getFirst()))
         {
-           // System.out.println("Position:" + position);
+            // System.out.println("Position:" + position);
             path.addFirst(backtrack.getFirst());
             backtrack.remove();
         }
@@ -136,12 +134,17 @@ public class AgentEntity extends Entity
             //Collections.reverse(path);
         }
 
-        if (!isBacktracking && path.isEmpty())
-        {
-            isBacktracking = true;
-            //Collections.reverse(backtrack);
-        }
+//        if (!isBacktracking && path.isEmpty())
+//        {
+//            isBacktracking = true;
+//            //Collections.reverse(backtrack);
+//        }
 
+    }
+
+    public void setAnimation(Animation a)
+    {
+        anim = a;
     }
 
     public Animation getAnimation()
@@ -149,26 +152,42 @@ public class AgentEntity extends Entity
         return anim;
     }
 
-    private void generatePath()
+    public void setSpeed(int s)
     {
-        path.add(new Point2D(70, 3));
-        path.add(new Point2D(93, 3));
-        path.add(new Point2D(93, 31.43));
-        path.add(new Point2D(12.5, 31.43));
-        path.add(new Point2D(12.5, 46));
-        path.add(new Point2D(93, 46));
-        path.add(new Point2D(93, 77.30));
-        path.add(new Point2D(25, 77.30));
-        path.add(new Point2D(22.5, 70));
-        path.add(new Point2D(10, 70));
+        speed = s;
+    }
+
+    public void setHP(int h)
+    {
+        hp = h;
+    }
+
+    public void setDmg(int d)
+    {
+        dmg = d;
     }
 
     public void takeDmg(int dmg)
     {
         hp -= dmg;
-        if(hp == 0)
+        if (hp == 0)
         {
-            if(enemyType == "Blinky")
+            if (enemyType == "Blinky")
+            {
+                pointM.addPoints(1);
+            }
+
+            if (enemyType == "Inky")
+            {
+                pointM.addPoints(1);
+            }
+
+            if (enemyType == "Pinky")
+            {
+                pointM.addPoints(1);
+            }
+
+            if (enemyType == "Clyde")
             {
                 pointM.addPoints(1);
             }
@@ -193,33 +212,25 @@ public class AgentEntity extends Entity
         return (closeX && closeY);
     }
 
-    public void createAgent(String type)
-    {
-        if (type == "Blinky")
-        {
-            anim = animM.setAgentAnimation(type);
-            speed = 50;
-            hp = 5;
-            dmg = 1;
-        }
-    }
-    
     public boolean isAlive()
     {
         return isAlive;
     }
-    
+
     public boolean isCollidingPlayer()
     {
-         boolean pCollision = false;
+        boolean pCollision = false;
         if (hitBox.checkEntityCollision(this.getCollider(), p.getCollider()))
         {
             pCollision = true;
         }
         return pCollision;
     }
-    
-    
+
+    public void setPath(LinkedList<Point2D> path)
+    {
+        this.path = path;
+    }
 
     public Point2D getCenterPos()
     {

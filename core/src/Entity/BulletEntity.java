@@ -8,10 +8,7 @@ package Entity;
 import Components.Collider;
 import Math.Point2D;
 import Math.Vector2D;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  *
@@ -43,7 +40,7 @@ public class BulletEntity extends Entity
     @Override
     public void update(float t)
     {
-        System.out.println("Bullet Position: " + position);
+
         if (!hitBox.checkEntityCollision(hitBox, targetEntity.getCollider()))
         {
             targetVector = target.minus(position);

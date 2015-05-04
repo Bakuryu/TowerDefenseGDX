@@ -15,9 +15,7 @@ import Math.PointManager;
 import Math.TileConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 import java.awt.Point;
@@ -56,7 +54,7 @@ public class TowerGUI
         pointM = pM;
         this.sGUI = sGUI;
         this.entM = entM;
-        isPlacing = true;
+        isPlacing = false;
         sRender = new ShapeRenderer();
         sBatch = new SpriteBatch();
         this.corT = corT;
@@ -76,8 +74,17 @@ public class TowerGUI
         mouseSP = new Point(input.getX(), input.getY());
         mouseWP = corT.screenToWorld(mouseSP);
         noConsMouseWP = new Point2D(mouseWP);
-
-        System.out.println("MouseWP: " + mouseWP.getX() + ", " + mouseWP.getY());
+        if(input.isButtonPressed(Input.Buttons.RIGHT) || pointM.getPoints() < 3)
+        {
+            isPlacing = false;
+            sGUI.deselectButtons();
+        }
+        
+        if(sGUI.isButtonSelected())
+        {
+            isPlacing = true;
+        }
+       
 
         //System.out.println("TileCord: " + tx + ", " + ty);
         if (isPlacing && !(noConsMouseWP.getX() > 100))
@@ -112,7 +119,7 @@ public class TowerGUI
 
         tileInWorld = new Point2D(tCon.convertFromTileCord(tCon.convertToTileCord(mouseWP).x, tCon.convertToTileCord(mouseWP).y));
         tileInScreen = corT.worldToScreen(tileInWorld);
-        System.out.println("DiffMouse: " + mouseWP);
+
         if (isPlacing)
         {
             for (Rectangle r : gMap.getFreeRect())

@@ -11,8 +11,6 @@ import Math.CoordinateTranslator;
 import Math.Point2D;
 import com.badlogic.gdx.graphics.g2d.Animation;
 
-
-
 /**
  *
  * @author Bakuryu
@@ -23,7 +21,6 @@ public class PlayerEntity extends Entity
     //Point2D position;
     /* Player's start position*/
     //private Point2D startPos;
-    
     //private Point2D feetPos;
     /* Player's movement state (Left,Right,Up,Down,etc)*/
     //private String pMState;
@@ -56,7 +53,7 @@ public class PlayerEntity extends Entity
         position = new Point2D(x, y);
         //pMState = "IDLE";
         //pLDState = "D";
-        hp = 10;
+        hp = 1;
         animM = new AnimationManager();
         pAnim = animM.setPlayerAnimation();
         //this.gMap = gMap;
@@ -64,7 +61,7 @@ public class PlayerEntity extends Entity
 
 
         /* Create collider box the same size as player sprite*/
-        //col = new Collider(position, 32, 32);
+        col = new Collider(position, 32, 32);
 
     }
 
@@ -77,9 +74,9 @@ public class PlayerEntity extends Entity
     @Override
     public void update(float t)
     {
-
+        System.out.println("HP: " + hp);
         /* Update player animation based on delta time to keep it in synch with game*/
-        
+
         //feetPos.setX(position.getX()+4.3125);
         //feetPos.setY(position.getY()-13.0625);
         /**
@@ -283,6 +280,7 @@ public class PlayerEntity extends Entity
     {
         hp -= dmg;
     }
+
     public void setCordT(CoordinateTranslator corT)
     {
         this.corT = corT;
@@ -309,8 +307,8 @@ public class PlayerEntity extends Entity
     public void setAnimation()
     {
 
-            pAnim = animM.setPlayerAnimation();
-        
+        pAnim = animM.setPlayerAnimation();
+
     }
 
     /* Retrieve player's current animation (Used by SpriteRenderer)*/
@@ -347,8 +345,6 @@ public class PlayerEntity extends Entity
 //    {
 //        return feetPos;
 //    }
-
-    
 //    public void setStartPos(Point2D sP)
 //    {
 //        startPos = sP;
@@ -358,5 +354,8 @@ public class PlayerEntity extends Entity
 //    {
 //        gMap = map;
 //    }
-
+    public int getHP()
+    {
+        return hp;
+    }
 }
