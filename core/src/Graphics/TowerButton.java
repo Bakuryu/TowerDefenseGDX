@@ -7,6 +7,7 @@ package Graphics;
 
 import Math.CoordinateTranslator;
 import Math.Point2D;
+import Math.PointManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -14,7 +15,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import java.awt.Point;
 
 /**
@@ -34,20 +34,18 @@ public class TowerButton
     private Point2D mouseWP;
     private Point mouseSP;
     private boolean isSelected;
+    private PointManager pointM;
 
-
-
-    public TowerButton(double x, double y, String type, CoordinateTranslator corT2)
+    public TowerButton(double x, double y, String type, CoordinateTranslator corT2, PointManager pM)
     {
         buttonOutline = new Rectangle();
-
+        pointM = pM;
         this.corT2 = corT2;
         sBatch = new SpriteBatch();
         sDraw = new ShapeDrawer();
         position = new Point2D(x, y);
         mouseWP = new Point2D();
         mouseSP = new Point();
-
 
         towerType = type;
         isSelected = false;
@@ -57,7 +55,7 @@ public class TowerButton
     public void render()
     {
 
-        if(isSelected)
+        if (isSelected)
         {
             sDraw.drawRect((int) (buttonOutline.x - 10), (int) (buttonOutline.y - 10), (int) buttonOutline.width, (int) buttonOutline.height, 3, Color.BLUE);
         }
@@ -69,8 +67,10 @@ public class TowerButton
         {
             if (buttonOutline.contains(mouseSP.x, mouseSP.y))
             {
-                isSelected = true;
-
+                if (towerType == "reg" && pointM.getPoints() >= 3 || towerType == "sup" && pointM.getPoints() >= 8)
+                {
+                    isSelected = true;
+                }
             }
         }
     }
@@ -81,6 +81,13 @@ public class TowerButton
         {
             towerSpr = new Sprite(new Texture("graphics/RegTower.png"));
             buttonOutline = new Rectangle(corT2.worldToScreen(position).x, corT2.worldToScreen(position).y, (int) (towerSpr.getWidth() * 1.5) + 3, (int) (towerSpr.getHeight() * 1.5) + 3);
+        }
+
+        if (towerType == "sup")
+        {
+            towerSpr = new Sprite(new Texture("graphics/SupTower.png"));
+            buttonOutline = new Rectangle(corT2.worldToScreen(position).x, corT2.worldToScreen(position).y, (int) (towerSpr.getWidth() * 1.5) + 3, (int) (towerSpr.getHeight() * 1.5) + 3);
+
         }
 //        sBatch.begin();
 //        sBatch.draw(towerSpr, corT2.worldToScreen(position).x, corT2.worldToScreen(position).y, towerSpr.getWidth() / 2, towerSpr.getHeight() / 2, towerSpr.getWidth(), towerSpr.getHeight(), (float) 1.5, (float) 1.5, 0);
@@ -94,11 +101,12 @@ public class TowerButton
     {
         isSelected = false;
     }
+
     public boolean getIsSelected()
     {
         return isSelected;
     }
-    
+
     public Sprite getSprite()
     {
         return towerSpr;
@@ -108,6 +116,7 @@ public class TowerButton
     {
         return position;
     }
+
     public String getTButtonType()
     {
         return towerType;

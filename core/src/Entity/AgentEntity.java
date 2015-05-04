@@ -35,6 +35,11 @@ public class AgentEntity extends Entity
     private boolean isAlive;
     private PlayerEntity p;
     private PointManager pointM;
+    private boolean startScaredTimer;
+    private long scaredStart;
+    private int scaredCoolDown;
+    private boolean hasDied;
+    private boolean wasKilled;
 
     /**
      * Create an AgentEntity at location (x,y).
@@ -59,6 +64,10 @@ public class AgentEntity extends Entity
         path = new LinkedList<Point2D>();
         backtrack = new LinkedList<Point2D>();
         isBacktracking = false;
+        startScaredTimer = false;
+        scaredCoolDown = 5;
+        wasKilled = false;
+        hasDied = false;
 
     }
 
@@ -74,6 +83,16 @@ public class AgentEntity extends Entity
     {
         //System.out.println("Position: " + position);
         centerPos.set(new Point2D(position.getX() + 1, position.getY() + 4));
+        if (isBacktracking)
+        {
+            anim = animM.setAgentAnimation("Scared");
+            long counter;
+            counter = System.currentTimeMillis() - scaredStart;
+            if (counter >= scaredCoolDown * 1000)
+            {
+                isBacktracking = false;
+            }
+        }
 
         if (!isBacktracking)
         {
@@ -92,10 +111,9 @@ public class AgentEntity extends Entity
             position.set(newPos);
         }
 
-        if(isCollidingPlayer())
+        if (isCollidingPlayer())
         {
-            p.takeDmg(dmg);
-            takeDmg(hp);
+            Die();
             return;
         }
         if (isBacktracking && !backtrack.isEmpty() && !isAgentNear(this, backtrack.getFirst()))
@@ -109,11 +127,10 @@ public class AgentEntity extends Entity
             position.set(newPos);
         }
 
-        if (isBacktracking)
-        {
-            anim = animM.setAgentAnimation("Scared");
-        }
-
+//        if (isBacktracking)
+//        {
+//
+//        }
         if (!isBacktracking && !path.isEmpty() && isAgentNear(this, path.getFirst()))
         {
             // System.out.println("Position:" + position);
@@ -139,7 +156,6 @@ public class AgentEntity extends Entity
 //            isBacktracking = true;
 //            //Collections.reverse(backtrack);
 //        }
-
     }
 
     public void setAnimation(Animation a)
@@ -172,26 +188,30 @@ public class AgentEntity extends Entity
         hp -= dmg;
         if (hp == 0)
         {
-            if (enemyType == "Blinky")
+            if (!hasDied)
             {
-                pointM.addPoints(1);
-            }
+                if (enemyType == "Blinky")
+                {
+                    pointM.addPoints(1);
+                }
 
-            if (enemyType == "Inky")
-            {
-                pointM.addPoints(1);
-            }
+                if (enemyType == "Inky")
+                {
+                    pointM.addPoints(1);
+                }
 
-            if (enemyType == "Pinky")
-            {
-                pointM.addPoints(1);
-            }
+                if (enemyType == "Pinky")
+                {
+                    pointM.addPoints(1);
+                }
 
-            if (enemyType == "Clyde")
-            {
-                pointM.addPoints(1);
+                if (enemyType == "Clyde")
+                {
+                    pointM.addPoints(1);
+                }
             }
             isAlive = false;
+            hasDied = false;
         }
     }
 
@@ -215,6 +235,19 @@ public class AgentEntity extends Entity
     public boolean isAlive()
     {
         return isAlive;
+    }
+
+    public void Die()
+    {
+        hasDied = true;
+        p.takeDmg(dmg);
+        takeDmg(hp);
+
+    }
+
+    public boolean wasKilled()
+    {
+        return wasKilled;
     }
 
     public boolean isCollidingPlayer()
@@ -242,4 +275,10 @@ public class AgentEntity extends Entity
         return hitBox;
     }
 
+    public void isScared(boolean b)
+    {
+        isBacktracking = b;
+        startScaredTimer = true;
+        scaredStart = System.currentTimeMillis();
+    }
 }

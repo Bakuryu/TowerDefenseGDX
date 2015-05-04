@@ -13,7 +13,9 @@ import Entity.PlayerEntity;
 import Entity.TowerEntity;
 import Math.CoordinateTranslator;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.awt.Point;
@@ -31,6 +33,7 @@ public class SpriteRenderer
     private SpriteBatch sBatch;
     private float stateTime;
     private CoordinateTranslator corT;
+    private BitmapFont font;
 
     public SpriteRenderer(EntityManager entM, CoordinateTranslator corT)
     {
@@ -38,6 +41,7 @@ public class SpriteRenderer
         this.entM = entM;
         this.corT = corT;
         stateTime = 0f;
+        font = new BitmapFont();
 
     }
 
@@ -71,7 +75,7 @@ public class SpriteRenderer
     private void renderAgentEntity(AgentEntity a)
     {
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        
+
         anim = a.getAnimation();
         curFrame = anim.getKeyFrame(stateTime, true);
         sBatch.begin();
@@ -105,16 +109,17 @@ public class SpriteRenderer
 
     private void renderPlayerEntity(PlayerEntity p)
     {
-        
+
         anim = p.getAnimation();
         curFrame = anim.getKeyFrame(stateTime, true);
         sBatch.begin();
+
         Point pScrPos = new Point(corT.worldToScreen(p.getPosition()));
+        font.setColor(Color.GREEN);
+        font.draw(sBatch, "HP: " + p.getHP(), pScrPos.x, pScrPos.y + 32);
         p.getCollider().updatePos(pScrPos);
 
-        
-
-        sBatch.draw(curFrame, pScrPos.x, pScrPos.y-16,16,16,(float)curFrame.getRegionWidth(), (float)curFrame.getRegionHeight(), 1, 1,180);
+        sBatch.draw(curFrame, pScrPos.x, pScrPos.y - 16, 16, 16, (float) curFrame.getRegionWidth(), (float) curFrame.getRegionHeight(), 1, 1, 180);
         sBatch.end();
     }
 }

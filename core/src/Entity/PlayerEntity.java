@@ -53,7 +53,7 @@ public class PlayerEntity extends Entity
         position = new Point2D(x, y);
         //pMState = "IDLE";
         //pLDState = "D";
-        hp = 1;
+        hp = 10;
         animM = new AnimationManager();
         pAnim = animM.setPlayerAnimation();
         //this.gMap = gMap;

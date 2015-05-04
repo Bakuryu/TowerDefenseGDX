@@ -176,7 +176,7 @@ public class AgentEntityFactory
         {
             agent = new AgentEntity(70, -5.71, "Blinky", p, pointM);
             agent.setAnimation(animM.setAgentAnimation("Blinky"));
-            agent.setSpeed(30);
+            agent.setSpeed(20);
             agent.setHP(4);
             agent.setDmg(2);
             agent.setPath(generatePath());
@@ -186,7 +186,7 @@ public class AgentEntityFactory
         {
             agent = new AgentEntity(70, -5.71, "Inky", p, pointM);
             agent.setAnimation(animM.setAgentAnimation("Inky"));
-            agent.setSpeed(10);
+            agent.setSpeed(15);
             agent.setHP(7);
             agent.setDmg(4);
             agent.setPath(generatePath());
@@ -196,7 +196,7 @@ public class AgentEntityFactory
         {
             agent = new AgentEntity(70, -5.71, "Pinky", p, pointM);
             agent.setAnimation(animM.setAgentAnimation("Pinky"));
-            agent.setSpeed(40);
+            agent.setSpeed(35);
             agent.setHP(3);
             agent.setDmg(1);
             agent.setPath(generatePath());
@@ -206,7 +206,7 @@ public class AgentEntityFactory
         {
             agent = new AgentEntity(70, -5.71, "Clyde", p, pointM);
             agent.setAnimation(animM.setAgentAnimation("Clyde"));
-            agent.setSpeed(20);
+            agent.setSpeed(25);
             agent.setHP(5);
             agent.setDmg(3);
             agent.setPath(generatePath());

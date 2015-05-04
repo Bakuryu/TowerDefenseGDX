@@ -84,8 +84,16 @@ public class TowerEntity extends Entity
         if (type == "reg")
         {
             towerSpr = new Texture("graphics/RegTower.png");
-            coolDown = 1;
-            viewDist = 30;
+            coolDown = 2;
+            viewDist = 20;
+            rotateSpeed = 10;
+        }
+        
+        if(type == "sup")
+        {
+            towerSpr = new Texture("graphics/SupTower.png");
+            coolDown = 7;
+            viewDist = 10;
             rotateSpeed = 10;
         }
     }

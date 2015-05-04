@@ -14,6 +14,7 @@ import Math.Point2D;
 import Math.PointManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -43,6 +44,8 @@ public class TWDGame extends ApplicationAdapter
     private boolean isGameOver;
     private BitmapFont font;
     private SpriteBatch sBatch;
+    private Sound gameStart;
+    private Sound pacDie;
 
     @Override
     public void create()
@@ -69,6 +72,9 @@ public class TWDGame extends ApplicationAdapter
 
         sGUI = new SideMenuGUI(corT2, pointM, waveM);
         tGUI = new TowerGUI(gMap, corT1, entM, sGUI, pointM);
+        gameStart = Gdx.audio.newSound(Gdx.files.internal("sound/startM.wav"));
+        gameStart.play();
+        pacDie = Gdx.audio.newSound(Gdx.files.internal("sound/pacDie.wav"));
         //curFrame = new TextureRegion();
     }
 
@@ -117,6 +123,7 @@ public class TWDGame extends ApplicationAdapter
         entM.updateEnts(deltaTime);
         if (player.getHP() <= 0)
         {
+            pacDie.play();
             isGameOver = true;
         }
 

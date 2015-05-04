@@ -50,15 +50,19 @@ public class BulletEntity extends Entity
         }
         else
         {
-            bulletOwner.targetHit(this);
-            targetEntity.takeDmg(1);
+            if (type == "reg")
+            {
+                bulletOwner.targetHit(this);
+                targetEntity.takeDmg(1);
+            }
+            else
+            {
+                bulletOwner.targetHit(this);
+                targetEntity.isScared(true);
+            }
         }
-        
 
 //        sDraw.drawRect(hitBox.getHitBox().x,hitBox.getHitBox().y,hitBox.getHitBox().width,hitBox.getHitBox().height,2,Color.WHITE);
-
-        
-
     }
 
     private void createBullet()
@@ -71,6 +75,15 @@ public class BulletEntity extends Entity
             speed = 150;
 
         }
+
+        if (type == "sup")
+        {
+            bullSpr = new Texture("graphics/pellBullet.png");
+
+            hitBox = new Collider(position, 16, 16);
+            speed = 120;
+
+        }
     }
 
     public Texture getBSprite()
@@ -78,10 +91,9 @@ public class BulletEntity extends Entity
         return bullSpr;
     }
 
-    
     public Collider getCollider()
     {
-     return hitBox;   
+        return hitBox;
     }
 
 }
